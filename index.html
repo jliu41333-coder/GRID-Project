@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seen & Achieved</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --c1:#FF6B6B;--c2:#FFD93D;--c3:#6BCB77;--c4:#4D96FF;--c5:#C77DFF;--c6:#FF9A3C;
+  --bg:#FAFAF7;--dark:#1c1c1c;--text:#2a2a2a;--muted:#777;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;font-size:16px;line-height:1.65}
+
+nav{padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--dark);background:var(--bg)}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:1.25rem}
+.nav-links{display:flex;gap:1.25rem;list-style:none}
+.nav-links a{font-size:0.82rem;text-decoration:none;color:var(--muted);transition:color 0.2s}
+.nav-links a:hover{color:var(--dark)}
+
+.hero{padding:5rem 2rem 4rem;border-bottom:1.5px solid var(--dark);max-width:860px;margin:0 auto}
+.hero-kicker{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem}
+.hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:400;line-height:1.15;margin-bottom:1.25rem}
+.hero h1 em{font-style:italic;color:var(--c1)}
+.hero-sub{font-size:1rem;color:var(--muted);max-width:520px;margin-bottom:0.75rem}
+.hero-meta{font-size:0.82rem;color:#aaa}
+
+.section{padding:4rem 2rem;border-bottom:1.5px solid #e8e8e5;max-width:860px;margin:0 auto}
+.section-kicker{font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem}
+.section-title{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:400;line-height:1.2;margin-bottom:1.5rem}
+
+.q-dark{background:var(--dark);color:white;padding:4rem 2rem;border-bottom:1.5px solid #333}
+.q-dark-inner{max-width:860px;margin:0 auto}
+.q-dark .section-kicker{color:rgba(255,255,255,0.4)}
+.q-dark .section-title{color:white}
+.q-text{font-size:0.95rem;line-height:1.8;color:rgba(255,255,255,0.65);max-width:620px;margin-bottom:2.5rem}
+.big-q{font-family:'Instrument Serif',serif;font-size:clamp(1.3rem,3.5vw,2rem);font-style:italic;font-weight:400;line-height:1.5;color:white;border-left:3px solid var(--c2);padding-left:1.5rem;margin:2rem 0 2.5rem}
+
+.spectrum{display:flex;border:1.5px solid rgba(255,255,255,0.15);border-radius:12px;overflow:hidden}
+.s-side{flex:1;padding:1.5rem}
+.s-yes{background:rgba(255,107,107,0.12)}
+.s-no{background:rgba(77,150,255,0.1)}
+.s-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.4rem}
+.s-claim{font-family:'Instrument Serif',serif;font-size:1.1rem;color:white;margin-bottom:0.5rem}
+.s-yes .s-claim{color:var(--c1)}
+.s-no .s-claim{color:var(--c4)}
+.s-desc{font-size:0.85rem;line-height:1.65;color:rgba(255,255,255,0.55)}
+.s-div{width:1.5px;background:rgba(255,255,255,0.1)}
+
+.sources-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:0.5rem}
+.src-card{border:1.5px solid #ddd;border-radius:10px;padding:1.25rem;background:white;cursor:pointer;transition:border-color 0.2s,transform 0.2s}
+.src-card:hover{border-color:var(--dark);transform:translateY(-2px)}
+.src-dot{width:10px;height:10px;border-radius:50%;margin-bottom:0.9rem}
+.src-title{font-family:'Instrument Serif',serif;font-size:1.05rem;line-height:1.3;margin-bottom:0.25rem}
+.src-author{font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem}
+.src-badge{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:999px;display:inline-block;margin-bottom:0.85rem}
+.src-preview{font-size:0.88rem;line-height:1.65;color:#555}
+.src-expand{display:none;margin-top:0.85rem;padding-top:0.85rem;border-top:1px solid #eee;font-size:0.88rem;line-height:1.7;color:#444}
+.src-expand.open{display:block}
+.src-toggle{font-size:0.78rem;margin-top:0.65rem;color:var(--dark);cursor:pointer;border:none;background:none;padding:0;text-decoration:underline;text-underline-offset:3px}
+
+.conc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-top:0.5rem}
+.conc-block{border:1.5px solid #ddd;border-radius:10px;padding:1.25rem;background:white}
+.conc-num{font-family:'Instrument Serif',serif;font-size:2.5rem;font-weight:400;opacity:0.1;line-height:1;margin-bottom:-0.3rem}
+.conc-title{font-family:'Instrument Serif',serif;font-size:1.05rem;margin-bottom:0.5rem}
+.conc-text{font-size:0.87rem;line-height:1.7;color:#555}
+
+.cite-section{background:var(--dark);padding:4rem 2rem}
+.cite-inner{max-width:860px;margin:0 auto}
+.cite-section .section-kicker{color:rgba(255,255,255,0.35)}
+.cite-section .section-title{color:white}
+.cite-list{list-style:none;display:flex;flex-direction:column;gap:1rem;margin-top:1rem}
+.cite-item{border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:1rem 1.25rem;display:flex;gap:1rem;align-items:flex-start;cursor:pointer;transition:border-color 0.2s,background 0.2s}
+.cite-item:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.04)}
+.cite-n{font-family:'Instrument Serif',serif;font-size:1.6rem;font-weight:400;opacity:0.18;min-width:28px;line-height:1}
+.cite-text{font-size:0.84rem;line-height:1.8;color:rgba(255,255,255,0.62);font-family:monospace}
+.cite-text em{color:rgba(255,255,255,0.9);font-style:italic}
+.cite-badge{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.18rem 0.55rem;border-radius:999px;margin-top:0.4rem;display:inline-block}
+.badge-class{background:rgba(255,217,61,0.18);color:#e6c200}
+.badge-own{background:rgba(77,150,255,0.18);color:#7db8ff}
+
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,0.07);padding:1.5rem 2rem;text-align:center;color:rgba(255,255,255,0.25);font-size:0.78rem}
+
+@media(max-width:560px){
+  .spectrum{flex-direction:column}
+  .s-div{width:100%;height:1px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Seen & Achieved</div>
+  <ul class="nav-links">
+    <li><a href="#question">The Question</a></li>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#conclusions">Conclusions</a></li>
+    <li><a href="#works-cited">Works Cited</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-kicker">Great Ideas, Spring 2026</div>
+  <h1>Does being <em>seen</em> change what you can do?</h1>
+  <p class="hero-sub">An exploration of how others' perceptions shape, or don't shape, what we're able to achieve.</p>
+  <p class="hero-meta">James Liu and Sebastian Maher &nbsp;/&nbsp; Ms. Welin</p>
+</div>
+
+<div class="q-dark" id="question">
+  <div class="q-dark-inner">
+    <div class="section-kicker">The Question</div>
+    <div class="section-title">What we set out to answer</div>
+    <p class="q-text">From social media likes to prison surveillance, from Emerson's essays to Foucault's Panopticon, people have always wondered whether being watched matters. We explored whether the gaze of others is fuel, a cage, or just a distraction.</p>
+    <div class="big-q">To what extent do others' perceptions of you impact your achievements?</div>
+    <div class="spectrum">
+      <div class="s-side s-yes">
+        <div class="s-label">The "yes" side</div>
+        <div class="s-claim">Others' eyes push us forward</div>
+        <div class="s-desc">Debord, Foucault, and Sartre argue we are shaped by external attention. We perform, conform, and achieve partly for whoever is watching.</div>
+      </div>
+      <div class="s-div"></div>
+      <div class="s-side s-no">
+        <div class="s-label">The "no" side</div>
+        <div class="s-claim">Real achievement comes from within</div>
+        <div class="s-desc">Emerson, King, and Ryan and Deci argue that chasing approval is a trap. The most meaningful work happens when you stop listening to the crowd.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="sources">
+  <div class="section-kicker">The Sources</div>
+  <div class="section-title">Six perspectives on perception and achievement</div>
+  <p style="font-size:0.9rem;color:var(--muted);margin-bottom:1.5rem">Click any card to read more.</p>
+  <div class="sources-grid">
+
+    <div class="src-card" onclick="toggleSrc(this)">
+      <div class="src-dot" style="background:var(--c1)"></div>
+      <div class="src-title">Society of the Spectacle</div>
+      <div class="src-author">Guy Debord, 1967</div>
+      <span class="src-badge" style="background:#fff0f0;color:#c0392b">Class source</span>
+      <p class="src-preview">Human life has shifted from being to appearing. We achieve for strangers' approval and mistake their validation for real fulfillment.</p>
+      <div class="src-expand">Debord argues that modern capitalism creates an environment where identity is defined by what we project, not who we are. People chase likes, followers, and prestige as a substitute for actual fulfillment. His work is the clearest "yes" argument in our project: not only do others' perceptions matter, we actively hunt for them. This is key for understanding how social media amplifies the power of the external gaze over individual achievement.</div>
+      <button class="src-toggle">Read more</button>
+    </div>
+
+    <div class="src-card" onclick="toggleSrc(this)">
+      <div class="src-dot" style="background:#c8a400"></div>
+      <div class="src-title">Self-Reliance</div>
+      <div class="src-author">Ralph Waldo Emerson, 1841</div>
+      <span class="src-badge" style="background:#fffbe6;color:#8a6800">Class source</span>
+      <p class="src-preview">"Society everywhere is in conspiracy against the manhood of every one of its members." True genius trusts itself first.</p>
+      <div class="src-expand">Emerson's essay argues that conforming to others' expectations destroys a person's authenticity and potential. The crowd will always pull you toward mediocrity. This is our clearest "no" voice: meaningful achievement has to come from internal conviction, not external approval. Emerson makes the case that surrendering to how others define success is a betrayal of the self, and produces work that is always weaker than what the self, unobserved, might create.</div>
+      <button class="src-toggle">Read more</button>
+    </div>
+
+    <div class="src-card" onclick="toggleSrc(this)">
+      <div class="src-dot" style="background:var(--c3)"></div>
+      <div class="src-title">Letter from Birmingham Jail</div>
+      <div class="src-author">Dr. Martin Luther King Jr., 1963</div>
+      <span class="src-badge" style="background:#f0faf2;color:#1e6b31">Class source</span>
+      <p class="src-preview">King broke unjust laws in the face of social pressure. Progress sometimes means ignoring what others think of you entirely.</p>
+      <div class="src-expand">King argues that moral conviction has to override the judgments of society, including moderates who urged patience and conformity. His achievements, and those of the civil rights movement, came precisely by resisting what dominant perception expected of Black Americans. This makes King a powerful "no" voice: the greatest achievements are often made in the face of hostile perception, not because of it. Success built on social approval is fragile, but success rooted in justice is durable.</div>
+      <button class="src-toggle">Read more</button>
+    </div>
+
+    <div class="src-card" onclick="toggleSrc(this)">
+      <div class="src-dot" style="background:var(--c4)"></div>
+      <div class="src-title">Panopticism</div>
+      <div class="src-author">Michel Foucault, 1975</div>
+      <span class="src-badge" style="background:#eef5ff;color:#0d47a1">Own research</span>
+      <p class="src-preview">When people believe they are being watched, they regulate themselves even without a real observer. The gaze gets internalized.</p>
+      <div class="src-expand">Foucault's theory of panopticism, drawn from Bentham's Panopticon prison design, shows that the belief in observation is as powerful as actual observation. People discipline their own behavior when they think someone is watching. Applied to our question, this explains why performance at work or school spikes around an audience. It is a nuanced "yes": others' perceptions do not just influence us from the outside, they become a permanent internal monitor we carry around.</div>
+      <button class="src-toggle">Read more</button>
+    </div>
+
+    <div class="src-card" onclick="toggleSrc(this)">
+      <div class="src-dot" style="background:var(--c5)"></div>
+      <div class="src-title">Bad Faith and Self-Deception</div>
+      <div class="src-author">Sartre, via Du Plessis, 2023</div>
+      <span class="src-badge" style="background:#f9f0ff;color:#6a1b9a">Own research</span>
+      <p class="src-preview">When we chase external validation, we lie to ourselves. "Bad faith" is what happens when we abandon our real values to earn approval.</p>
+      <div class="src-expand">Sartre's concept of mauvaise foi (bad faith) describes how humans deceive themselves to stay comfortable, often by conforming to social benchmarks they do not actually believe in. When people change their goals to win the approval of others, they are living in bad faith. This source connects both sides: yes, external perception shapes behavior, but at the cost of authenticity. Real achievement, for Sartre, can only come from radical freedom, choosing your own values rather than borrowing them from the crowd.</div>
+      <button class="src-toggle">Read more</button>
+    </div>
+
+    <div class="src-card" onclick="toggleSrc(this)">
+      <div class="src-dot" style="background:var(--c6)"></div>
+      <div class="src-title">Intrinsic Motivation Theory</div>
+      <div class="src-author">Ryan and Deci, via O'Hara, 2017</div>
+      <span class="src-badge" style="background:#fff6ee;color:#8c4000">Own research</span>
+      <p class="src-preview">Psychology backs it up: people are more successful when driven by internal goals, not by trying to impress anyone.</p>
+      <div class="src-expand">Ryan and Deci's Self-Determination Theory gives the "no" camp some scientific grounding. Their research shows that intrinsically motivated people consistently outperform those chasing external rewards or social approval when it comes to creativity, persistence, and overall wellbeing. That said, the theory does not pretend external validation is meaningless. It accepts that it is common and sometimes motivating, but argues that internal drive is always a stronger and more lasting foundation for achievement.</div>
+      <button class="src-toggle">Read more</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" id="conclusions" style="border-bottom:1.5px solid #e8e8e5">
+  <div class="section-kicker">Conclusions</div>
+  <div class="section-title">What we found</div>
+  <p style="font-size:0.95rem;color:var(--muted);max-width:620px;margin-bottom:1.75rem">After going through six perspectives across philosophy, psychology, history, and critical theory, we landed on a nuanced answer: perception matters, but how much depends on whose perception it is and what you are actually trying to do.</p>
+  <div class="conc-grid">
+    <div class="conc-block">
+      <div class="conc-num">01</div>
+      <div class="conc-title">The gaze is real and it is powerful</div>
+      <p class="conc-text">Debord and Foucault show that external perception genuinely shapes behavior, often at a deep psychological level. Pretending it does not exist is naive.</p>
+    </div>
+    <div class="conc-block">
+      <div class="conc-num">02</div>
+      <div class="conc-title">But it can corrupt what we achieve</div>
+      <p class="conc-text">Sartre and Emerson both warn that chasing others' approval leads to bad faith. Work shaped for an audience is almost always weaker for it.</p>
+    </div>
+    <div class="conc-block">
+      <div class="conc-num">03</div>
+      <div class="conc-title">The biggest achievements often defy the crowd</div>
+      <p class="conc-text">King's letter is the clearest proof: transformative achievement often happens in opposition to prevailing perception, not because of it.</p>
+    </div>
+    <div class="conc-block">
+      <div class="conc-num">04</div>
+      <div class="conc-title">Science sides with internal motivation</div>
+      <p class="conc-text">Ryan and Deci's research confirms the philosophical intuition. Intrinsic motivation produces deeper, more lasting achievement than external validation does.</p>
+    </div>
+  </div>
+</div>
+
+<div class="cite-section" id="works-cited">
+  <div class="cite-inner">
+    <div class="section-kicker">Works Cited</div>
+    <div class="section-title">Full bibliography</div>
+    <p style="font-size:0.85rem;color:rgba(255,255,255,0.35);margin-bottom:1.5rem">MLA 9th edition. Hover to highlight. Yellow = class source, blue = own research.</p>
+    <ul class="cite-list">
+      <li class="cite-item">
+        <div class="cite-n">1</div>
+        <div>
+          <div class="cite-text">Debord, Guy. <em>"Society of the Spectacle."</em> Marxists.org, 1967, www.marxists.org/reference/archive/debord/society.htm. Accessed 18 May 2026.</div>
+          <span class="cite-badge badge-class">Class source</span>
+        </div>
+      </li>
+      <li class="cite-item">
+        <div class="cite-n">2</div>
+        <div>
+          <div class="cite-text">Du Plessis, Guy. <em>"A Dispositional Account of Self-Deception: A Critical Analysis of Sartre's Theory of Bad Faith."</em> 5 Mar. 2023, philarchive.org/archive/DUPADA. Accessed 18 May 2026.</div>
+          <span class="cite-badge badge-own">Own research</span>
+        </div>
+      </li>
+      <li class="cite-item">
+        <div class="cite-n">3</div>
+        <div>
+          <div class="cite-text">Emerson, Ralph Waldo. <em>"Self-Reliance."</em> American Transcendentalism Web, 1841, archive.vcu.edu/english/engweb/transcendentalism/authors/emerson/essays/selfreliance.html. Accessed 18 May 2026.</div>
+          <span class="cite-badge badge-class">Class source</span>
+        </div>
+      </li>
+      <li class="cite-item">
+        <div class="cite-n">4</div>
+        <div>
+          <div class="cite-text">Foucault, Michel. <em>"Panopticism"</em> from Discipline and Punish: The Birth of the Prison. Race/Ethnicity: Multidisciplinary Global Contexts, vol. 2, no. 1, 2008, pp. 1-12, muse.jhu.edu/pub/3/article/252435/pdf. Accessed 18 May 2026.</div>
+          <span class="cite-badge badge-own">Own research</span>
+        </div>
+      </li>
+      <li class="cite-item">
+        <div class="cite-n">5</div>
+        <div>
+          <div class="cite-text">King Jr., Martin Luther. <em>"Letter from Birmingham Jail."</em> Bates.edu, 2019, abacus.bates.edu/admin/offices/dos/mlk/letter.html. Accessed 18 May 2026.</div>
+          <span class="cite-badge badge-class">Class source</span>
+        </div>
+      </li>
+      <li class="cite-item">
+        <div class="cite-n">6</div>
+        <div>
+          <div class="cite-text">O'Hara, Delia. <em>"The Intrinsic Motivation of Richard Ryan and Edward Deci."</em> American Psychological Association, 2017, www.apa.org/members/content/intrinsic-motivation. Accessed 18 May 2026.</div>
+          <span class="cite-badge badge-own">Own research</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<footer>Seen and Achieved &nbsp;/&nbsp; James Liu and Sebastian Maher &nbsp;/&nbsp; Great Ideas, Spring 2026</footer>
+
+<script>
+function toggleSrc(card){
+  var exp=card.querySelector('.src-expand');
+  var btn=card.querySelector('.src-toggle');
+  var open=exp.classList.contains('open');
+  exp.classList.toggle('open');
+  btn.textContent=open?'Read more':'Read less';
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    var t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth'});
+  });
+});
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      entry.target.style.opacity='1';
+      entry.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.src-card,.conc-block,.cite-item').forEach(function(el){
+  el.style.opacity='0';
+  el.style.transform='translateY(16px)';
+  el.style.transition='opacity 0.45s ease,transform 0.45s ease';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
